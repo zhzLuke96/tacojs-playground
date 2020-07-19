@@ -1,6 +1,8 @@
 import { html, useState, useStyle, useEffect, useRef } from '@tacopie/taco';
 import debounce from 'lodash/debounce';
 
+const unpkgURL = 'https://unpkg.com/@tacopie/taco';
+
 const injectScript = debounce((body: HTMLElement, script: string) => {
     body.innerHTML = `<div id='root'></div>`;
     const scriptElem = document.createElement('script');
@@ -9,8 +11,21 @@ const injectScript = debounce((body: HTMLElement, script: string) => {
     body.appendChild(scriptElem);
 }, 500)
 
+const injectImportScript = (head: HTMLHeadElement, src: string) => {
+    const scripts = Array.from(head.querySelectorAll('script'));
+    for (const scr of scripts) {
+        if (scr.src === src) {
+            return
+        }
+    }
+    const scriptElem = document.createElement('script');
+    scriptElem.src = src;
+    scriptElem.type = 'text/javascript';
+    head.appendChild(scriptElem);
+}
+
 export const Frame = (props, children) => {
-    const { content } = props || {};
+    const { refrashHandler } = props || {};
     const {
         styleRef
     } = useStyle({
@@ -24,12 +39,19 @@ export const Frame = (props, children) => {
     const iframe = useRef(null as null | HTMLIFrameElement);
 
     useEffect(() => {
-        const [ifr, script] = [iframe?.value, content?.value];
+        const [ifr] = [iframe?.value];
         if (!ifr) {
             return
         }
-        if (ifr.contentDocument?.body) {
-            injectScript(ifr.contentDocument.body, script);
+        if (ifr.contentDocument?.head) {
+            injectImportScript(ifr.contentDocument.head, unpkgURL);
+        }
+        refrashHandler.value = (script) => {
+            ifr.src = 'about:blank'; // refrash
+            setTimeout(() => {
+                injectImportScript(ifr.contentDocument.head, unpkgURL);
+                injectScript(ifr.contentDocument.body, script);
+            }, 1)
         }
     })
 

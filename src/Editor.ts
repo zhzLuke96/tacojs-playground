@@ -7,7 +7,7 @@ const loadEditor = () => new Promise((resolve, reject) => {
 })
 
 export const Editor = (props, children) => {
-    const { defaultValue = '', onchange } = props || {};
+    const { defaultValue = '', onchange, saveHandler } = props || {};
     const {
         styleRef
     } = useStyle({
@@ -29,9 +29,27 @@ export const Editor = (props, children) => {
             language: 'javascript',
             theme: 'vs-dark',
             automaticLayout: true,
+            wordWrap: 'on',
+            wrappingIndent: 'indent',
         });
-        onchange && $editor.onDidChangeModelContent(() => onchange($editor.getValue()));
         editorRef.value = $editor;
+        onchange && $editor.onDidChangeModelContent(() => onchange($editor.getValue()));
+
+        $editor.addAction({
+            id: 'save',
+            label: 'SAVE',
+            keybindings: [
+                monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S
+            ],
+            precondition: null,
+            keybindingContext: null,
+            contextMenuGroupId: 'navigation',
+            contextMenuOrder: 1.5,
+            run: function (ed) {
+                saveHandler(ed);
+                return null;
+            }
+        });
     })
     return html`<div ref=${[styleRef, elemRef]}></div>`;
 };

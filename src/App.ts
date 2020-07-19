@@ -1,6 +1,7 @@
-import { html, useState, useStyle, Icon, useLocalState } from '@tacopie/taco';
+import { html, useState, useStyle, Icon, useLocalState, useRef, useEffect } from '@tacopie/taco';
 import Editor from './Editor';
 import Frame from './Frame';
+
 
 const _v = (v) => v?.value || v;
 
@@ -49,20 +50,26 @@ export const App = (props, children) => {
       display: 'flex',
     }
   })
-  const iframe_script = useLocalState('@tacopia/taco-playground', `console.log('hello world')`);
-  const [, , content] = useState(() => iframe_script.value);
+  const content = useLocalState('@tacopia/taco-playground', `console.log('hello world')`);
+  const refrashHandler = useRef(() => x => x);
+
+  const refrash = () => refrashHandler.value(content.value);
+  // useEffect(refrash)
+
+  setTimeout(refrash, 1000);
+
   return html`
     <div ref=${[styleRef]}>
       <header>
         <${RunBtn} ><${Icon} name='whatshot' /><//>
         <${RunBtn} >File<//>
         <${RunBtn} >Edit<//>
-        <${RunBtn} color=${'rgb(45, 181, 93)'} onclick=${() => iframe_script.value = content.value}>Run<//>
+        <${RunBtn} color=${'rgb(45, 181, 93)'} onclick=${refrash}>Run<//>
         <${RunBtn} >Help<//>
       </header>
       <div>
-        <${Editor} defaultValue=${content} onchange=${(t) => content.value = t} />
-        <${Frame} content=${iframe_script} />
+        <${Editor} defaultValue=${content} onchange=${(t) => content.value = t} saveHandler=${refrash} />
+        <${Frame} refrashHandler=${refrashHandler} />
       </div>
     </div>
   `;
