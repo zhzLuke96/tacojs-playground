@@ -53,7 +53,7 @@ export const App = (props, children) => {
   const content = useLocalState('@tacopia/taco-playground', `console.log('hello world')`);
   const refrashHandler = useRef(() => x => x);
 
-  const refrash = () => refrashHandler.value(content.value);
+  const refrash = () => refrashHandler.value(`Promise.resolve().then(() => {${content.value}})`);
   // useEffect(refrash)
 
   setTimeout(refrash, 1000);
