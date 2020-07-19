@@ -1,5 +1,7 @@
 # Tacojs-playground
 
+![Publish page](https://github.com/zhzLuke96/tacojs-playground/workflows/Publish%20page/badge.svg?branch=master)
+
 🌮Tacojs playground.
 
 ## Table of Contents
