@@ -10,6 +10,7 @@
   - [Table of Contents](#table-of-contents)
   - [Background](#background)
   - [Try it out](#try-it-out)
+  - [Screenshot](#screenshot)
   - [Related Efforts](#related-efforts)
   - [Maintainers](#maintainers)
   - [License](#license)
@@ -21,6 +22,10 @@ Tool like codesandbox, but based [Tacojs](https://github.com/zhzLuke96/TacoJs).
 ## Try it out
 
 Try the playground out on [github-pages](https://zhzluke96.github.io/tacojs-playground/).
+
+## Screenshot
+
+![screenshot](./docs/shot1.png)
 
 ## Related Efforts
 
