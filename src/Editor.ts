@@ -1,0 +1,39 @@
+import { html, useState, useStyle, useRef, useEffect } from '@tacopie/taco';
+
+const loadEditor = () => new Promise((resolve, reject) => {
+    (window as any).require(['vs/editor/editor.main'], function () {
+        resolve((window as any).monaco)
+    })
+})
+
+export const Editor = (props, children) => {
+    const { defaultValue = '', onchange } = props || {};
+    const {
+        styleRef
+    } = useStyle({
+        'max-width': '640px',
+        width: '50%',
+        height: '100%',
+        display: 'inline-block',
+    })
+    const editorRef = useRef(null as any);
+    const elemRef = useRef(null as any);
+    useEffect(async () => {
+        const [editor, elem, defVal] = [editorRef?.value, elemRef?.value, defaultValue?.value];
+        if (!elem || editor) {
+            return
+        }
+        const monaco = await loadEditor() as any;
+        const $editor = monaco.editor.create(elem, {
+            value: defVal,
+            language: 'javascript',
+            theme: 'vs-dark',
+            automaticLayout: true,
+        });
+        onchange && $editor.onDidChangeModelContent(() => onchange($editor.getValue()));
+        editorRef.value = $editor;
+    })
+    return html`<div ref=${[styleRef, elemRef]}></div>`;
+};
+
+export default Editor;

@@ -1,2 +1,34 @@
-# tacojs-playground
+# Tacojs-playground
+
 🌮Tacojs playground.
+
+## Table of Contents
+
+- [Tacojs-playground](#tacojs-playground)
+  - [Table of Contents](#table-of-contents)
+  - [Background](#background)
+  - [Try it out](#try-it-out)
+  - [Related Efforts](#related-efforts)
+  - [Maintainers](#maintainers)
+  - [License](#license)
+
+## Background
+
+Tool like codesandbox, but based [Tacojs](https://github.com/zhzLuke96/TacoJs).
+
+## Try it out
+
+Try the playground out on [github-pages](https://zhzluke96.github.io/tacojs-playground/).
+
+## Related Efforts
+
+- [TacoJs](https://github.com/zhzLuke96/TacoJs)
+- [monaco-editor](https://github.com/microsoft/monaco-editor)
+
+## Maintainers
+
+[@zhzluke96](https://github.com/zhzluke96).
+
+## License
+
+[MIT](LICENSE) © Richard Littauer
