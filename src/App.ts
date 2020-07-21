@@ -10,6 +10,7 @@ import {
 import Editor from "./Editor";
 import Frame from "./Frame";
 import { _v } from "./utils";
+import defaultScript from "./defaultScript.txt";
 
 const RunBtn = (props, children) => {
   const { color } = props || {};
@@ -55,10 +56,11 @@ export const App = (props, children) => {
   });
   const content = useLocalState(
     "@tacopia/taco-playground",
-    `console.log('hello world')`,
+    defaultScript,
   );
   const [, , editContent] = useState(() => content.value);
   const syncContent = () =>
+    // 这里是为了截断依赖捕获的逻辑，后续会提供 skip 元语
     setTimeout(() => (content.value = editContent.value), 1);
   const refrash = syncContent;
 

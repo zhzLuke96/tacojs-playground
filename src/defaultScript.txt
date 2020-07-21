@@ -1,0 +1,34 @@
+const $ = document
+    .querySelector
+    .bind(document);
+
+const {
+    useState,
+    html,
+    mount,
+} = window.taco;
+
+const css1 = { margin: '.5rem', padding: '1rem', 'font-weight': 900 };
+
+const App = () => {
+    const [, , count] = useState(7);
+    return html`
+    🙅🏻‍♂️ 🙅🏻‍♀️ 🙆🏻 🙆🏻‍♂️ 🙆🏻‍♀️ 💁🏻 💁🏻‍♂️ 💁🏻‍♀️ 🙋🏻 🙋🏻‍♂️ 🙋🏻‍♀️ <br />
+    <button
+        style=${css1}
+        onclick=${() => count.value++}>
+        ➕
+    </button>
+    <span
+        style=${css1}>
+        ✨count: ${count}
+    </span>
+    <button
+        style=${css1}
+        onclick=${() => count.value--}>
+        ➖
+    </button>
+    <br />🧏🏻 🧏🏻‍♂️ 🧏🏻‍♀️ 🙇🏻 🙇🏻‍♀️ 🤦🏻 🤦🏻‍♂️ 🤦🏻‍♀️ 🤷🏻 🤷🏻‍♂️ 🤷🏻‍♀️`
+}
+
+mount($('#root'), html`<${App} />`);

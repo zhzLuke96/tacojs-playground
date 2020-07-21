@@ -12,6 +12,7 @@ export const Frame = (props, children) => {
         "height": "100%",
         "display": "flex",
         "flex-flow": "column",
+        flex: 1,
         "border": "0",
         "background": "#fff",
     });
