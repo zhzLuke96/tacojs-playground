@@ -1,62 +1,61 @@
 import {
   html,
-  useState,
-  useStyle,
   Icon,
+  useEffect,
   useLocalState,
   useRef,
-  useEffect,
-} from '@tacopie/taco';
-import Editor from './Editor';
-import Frame from './Frame';
-import { _v } from './utils';
+  useState,
+  useStyle,
+} from "@tacopie/taco";
+import Editor from "./Editor";
+import Frame from "./Frame";
+import { _v } from "./utils";
 
 const RunBtn = (props, children) => {
   const { color } = props || {};
 
   const { styleRef } = useStyle({
-    'font-weight': 100,
-    color: `${_v(color) || '#cccbcc'}`,
-    border: '0',
-    outline: 'none',
-    padding: '.25rem .5rem',
-    cursor: 'pointer',
-    'background-color': 'transparent',
-    transition: '.1s all',
-    '&:active': {
-      color: '#fff',
-      background: '#37373f',
+    "font-weight": 100,
+    "color": `${_v(color) || "#cccbcc"}`,
+    "border": "0",
+    "outline": "none",
+    "padding": ".25rem .5rem",
+    "cursor": "pointer",
+    "background-color": "transparent",
+    "transition": ".1s all",
+    "&:active": {
+      color: "#fff",
+      background: "#37373f",
     },
-    '&:hover': {
-      background: '#37373f',
+    "&:hover": {
+      background: "#37373f",
     },
   });
 
   return html`<button ref=${[styleRef]} ...${props}>
-    ${children || 'options'}
+    ${children || "options"}
   </button>`;
 };
 
 export const App = (props, children) => {
   const { styleRef } = useStyle({
-    width: '100vw',
-    height: '100vh',
-    'min-width': '640px',
-    display: 'flex',
-    'flex-flow': 'column',
-    '> header': {
-      'background-color': 'rgb(30, 30, 30)',
-      display: 'flex',
+    "width": "100vw",
+    "height": "100vh",
+    "min-width": "640px",
+    "display": "flex", "flex-flow": "column",
+    "> header": {
+      "background-color": "rgb(30, 30, 30)",
+      "display": "flex",
     },
-    '> div': {
-      flex: 'auto',
-      overflow: 'hidden',
-      display: 'flex',
+    "> div": {
+      flex: "auto",
+      overflow: "hidden",
+      display: "flex",
     },
   });
   const content = useLocalState(
-    '@tacopia/taco-playground',
-    `console.log('hello world')`
+    "@tacopia/taco-playground",
+    `console.log('hello world')`,
   );
   const [, , editContent] = useState(() => content.value);
   const syncContent = () =>
@@ -69,7 +68,7 @@ export const App = (props, children) => {
         <${RunBtn}><${Icon} name="whatshot" /><//>
         <${RunBtn}>File<//>
         <${RunBtn}>Edit<//>
-        <${RunBtn} color=${'rgb(45, 181, 93)'} onclick=${refrash}>Run<//>
+        <${RunBtn} color=${"rgb(45, 181, 93)"} onclick=${refrash}>Run<//>
         <${RunBtn}>Help<//>
       </header>
       <div>

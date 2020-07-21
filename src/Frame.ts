@@ -1,72 +1,72 @@
-import { html, useState, useStyle, useEffect, useRef } from '@tacopie/taco';
-import { makeBlobFromTree, revokeBlob, onWindowClose } from './utils';
+import { html, useEffect, useRef, useState, useStyle } from "@tacopie/taco";
+import { makeBlobFromTree, onWindowClose, revokeBlob } from "./utils";
 
-const unpkgURL = 'https://unpkg.com/@tacopie/taco';
+const unpkgURL = "https://unpkg.com/@tacopie/taco";
 
 export const Frame = (props, children) => {
     const { content } = props || {};
     const {
-        styleRef
+        styleRef,
     } = useStyle({
-        width: '50%',
-        height: '100%',
-        display: 'flex',
-        'flex-flow': 'column',
-        border: '0',
-        background: '#fff'
-    })
+        "width": "50%",
+        "height": "100%",
+        "display": "flex",
+        "flex-flow": "column",
+        "border": "0",
+        "background": "#fff",
+    });
 
     const iframe = useRef(null as null | HTMLIFrameElement);
 
     onWindowClose(() => {
         const [ifr] = [iframe?.value];
         if (!ifr) {
-            return
+            return;
         }
-        if ((ifr.src || '').startsWith('blob:')) {
+        if ((ifr.src || "").startsWith("blob:")) {
             revokeBlob(ifr.src);
         }
-    })
+    });
 
     useEffect(() => {
         const [ifr, innerScript] = [iframe?.value, content?.value];
         if (!ifr) {
-            return
+            return;
         }
-        if ((ifr.src || '').startsWith('blob:')) {
+        if ((ifr.src || "").startsWith("blob:")) {
             revokeBlob(ifr.src);
         }
         ifr.src = makeBlobFromTree({
-            tag: 'html',
-            lang: 'en',
+            tag: "html",
+            lang: "en",
             children: [{
-                tag: 'head',
+                tag: "head",
                 children: [{
-                    tag: 'script',
+                    tag: "script",
                     src: unpkgURL,
-                    children: ['']
-                }]
+                    children: [""],
+                }],
             }, {
-                tag: 'body',
+                tag: "body",
                 children: [{
-                    tag: 'div',
-                    id: 'root',
-                    children: ['']
+                    tag: "div",
+                    id: "root",
+                    children: [""],
                 }, {
-                    tag: 'script',
-                    type: 'text/javascript',
-                    children: [innerScript || '']
-                }]
-            }]
+                    tag: "script",
+                    type: "text/javascript",
+                    children: [innerScript || ""],
+                }],
+            }],
         });
-    })
+    });
 
     return html`<div ref=${[styleRef]}>
     <iframe ref=${[iframe]} style=${{
-            width: '100%',
+            width: "100%",
             flex: 1,
-            display: 'inline-block',
-            border: '0',
+            display: "inline-block",
+            border: "0",
         }}></iframe>
         <footer>
             [TODO]: console / mocker / loading / something link

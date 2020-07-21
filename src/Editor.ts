@@ -1,56 +1,56 @@
-import { html, useState, useStyle, useRef, useEffect } from '@tacopie/taco';
+import { html, useEffect, useRef, useState, useStyle } from "@tacopie/taco";
 
 const loadEditor = () => new Promise((resolve, reject) => {
-    (window as any).require(['vs/editor/editor.main'], function () {
-        resolve((window as any).monaco)
-    })
-})
+    (window as any).require(["vs/editor/editor.main"], function() {
+        resolve((window as any).monaco);
+    });
+});
 
 export const Editor = (props, children) => {
-    const { defaultValue = '', onchange, saveHandler } = props || {};
+    const { defaultValue = "", onchange, saveHandler } = props || {};
     const {
-        styleRef
+        styleRef,
     } = useStyle({
-        'max-width': '640px',
-        width: '50%',
-        height: '100%',
-        display: 'inline-block',
-    })
+        "max-width": "640px",
+        "width": "50%",
+        "height": "100%",
+        "display": "inline-block",
+    });
     const editorRef = useRef(null as any);
     const elemRef = useRef(null as any);
     useEffect(async () => {
         const [editor, elem, defVal] = [editorRef?.value, elemRef?.value, defaultValue?.value];
         if (!elem || editor) {
-            return
+            return;
         }
         const monaco = await loadEditor() as any;
         const $editor = monaco.editor.create(elem, {
             value: defVal,
-            language: 'javascript',
-            theme: 'vs-dark',
+            language: "javascript",
+            theme: "vs-dark",
             automaticLayout: true,
-            wordWrap: 'on',
-            wrappingIndent: 'indent',
+            wordWrap: "on",
+            wrappingIndent: "indent",
         });
         editorRef.value = $editor;
         onchange && $editor.onDidChangeModelContent(() => onchange($editor.getValue()));
 
         $editor.addAction({
-            id: 'save',
-            label: 'SAVE',
+            id: "save",
+            label: "SAVE",
             keybindings: [
-                monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S
+                monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S,
             ],
             precondition: null,
             keybindingContext: null,
-            contextMenuGroupId: 'navigation',
+            contextMenuGroupId: "navigation",
             contextMenuOrder: 1.5,
-            run: function (ed) {
+            run(ed) {
                 saveHandler(ed);
                 return null;
-            }
+            },
         });
-    })
+    });
     return html`<div ref=${[styleRef, elemRef]}></div>`;
 };
 
