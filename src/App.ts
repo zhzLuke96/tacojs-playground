@@ -1,16 +1,20 @@
-import { html, useState, useStyle, Icon, useLocalState, useRef, useEffect } from '@tacopie/taco';
+import {
+  html,
+  useState,
+  useStyle,
+  Icon,
+  useLocalState,
+  useRef,
+  useEffect,
+} from '@tacopie/taco';
 import Editor from './Editor';
 import Frame from './Frame';
-
-
-const _v = (v) => v?.value || v;
+import { _v } from './utils';
 
 const RunBtn = (props, children) => {
   const { color } = props || {};
 
-  const {
-    styleRef
-  } = useStyle({
+  const { styleRef } = useStyle({
     'font-weight': 100,
     color: `${_v(color) || '#cccbcc'}`,
     border: '0',
@@ -21,20 +25,20 @@ const RunBtn = (props, children) => {
     transition: '.1s all',
     '&:active': {
       color: '#fff',
-      background: '#37373f'
+      background: '#37373f',
     },
     '&:hover': {
       background: '#37373f',
-    }
-  })
+    },
+  });
 
-  return html`<button ref=${[styleRef]} ...${props}>${children || 'options'}</button>`
-}
+  return html`<button ref=${[styleRef]} ...${props}>
+    ${children || 'options'}
+  </button>`;
+};
 
 export const App = (props, children) => {
-  const {
-    styleRef
-  } = useStyle({
+  const { styleRef } = useStyle({
     width: '100vw',
     height: '100vh',
     'min-width': '640px',
@@ -48,28 +52,33 @@ export const App = (props, children) => {
       flex: 'auto',
       overflow: 'hidden',
       display: 'flex',
-    }
-  })
-  const content = useLocalState('@tacopia/taco-playground', `console.log('hello world')`);
-  const refrashHandler = useRef(() => x => x);
-
-  const refrash = () => refrashHandler.value(`Promise.resolve().then(() => {${content.value}})`);
-  // useEffect(refrash)
-
-  setTimeout(refrash, 1000);
+    },
+  });
+  const content = useLocalState(
+    '@tacopia/taco-playground',
+    `console.log('hello world')`
+  );
+  const [, , editContent] = useState(() => content.value);
+  const syncContent = () =>
+    setTimeout(() => (content.value = editContent.value), 1);
+  const refrash = syncContent;
 
   return html`
     <div ref=${[styleRef]}>
       <header>
-        <${RunBtn} ><${Icon} name='whatshot' /><//>
-        <${RunBtn} >File<//>
-        <${RunBtn} >Edit<//>
+        <${RunBtn}><${Icon} name="whatshot" /><//>
+        <${RunBtn}>File<//>
+        <${RunBtn}>Edit<//>
         <${RunBtn} color=${'rgb(45, 181, 93)'} onclick=${refrash}>Run<//>
-        <${RunBtn} >Help<//>
+        <${RunBtn}>Help<//>
       </header>
       <div>
-        <${Editor} defaultValue=${content} onchange=${(t) => content.value = t} saveHandler=${refrash} />
-        <${Frame} refrashHandler=${refrashHandler} />
+        <${Editor}
+          saveHandler=${refrash}
+          defaultValue=${content}
+          onchange=${(t) => (editContent.value = t)}
+        />
+        <${Frame} content=${content} />
       </div>
     </div>
   `;

@@ -1,31 +1,10 @@
 import { html, useState, useStyle, useEffect, useRef } from '@tacopie/taco';
-import debounce from 'lodash/debounce';
+import { makeBlobFromTree, revokeBlob, onWindowClose } from './utils';
 
 const unpkgURL = 'https://unpkg.com/@tacopie/taco';
 
-const injectScript = debounce((body: HTMLElement, script: string) => {
-    body.innerHTML = `<div id='root'></div>`;
-    const scriptElem = document.createElement('script');
-    scriptElem.type = 'text/javascript';
-    scriptElem.text = script;
-    body.appendChild(scriptElem);
-}, 500)
-
-const injectImportScript = (head: HTMLHeadElement, src: string) => {
-    const scripts = Array.from(head.querySelectorAll('script'));
-    for (const scr of scripts) {
-        if (scr.src === src) {
-            return
-        }
-    }
-    const scriptElem = document.createElement('script');
-    scriptElem.src = src;
-    scriptElem.type = 'text/javascript';
-    head.appendChild(scriptElem);
-}
-
 export const Frame = (props, children) => {
-    const { refrashHandler } = props || {};
+    const { content } = props || {};
     const {
         styleRef
     } = useStyle({
@@ -34,25 +13,52 @@ export const Frame = (props, children) => {
         display: 'flex',
         'flex-flow': 'column',
         border: '0',
+        background: '#fff'
     })
 
     const iframe = useRef(null as null | HTMLIFrameElement);
 
-    useEffect(() => {
+    onWindowClose(() => {
         const [ifr] = [iframe?.value];
         if (!ifr) {
             return
         }
-        if (ifr.contentDocument?.head) {
-            injectImportScript(ifr.contentDocument.head, unpkgURL);
+        if ((ifr.src || '').startsWith('blob:')) {
+            revokeBlob(ifr.src);
         }
-        refrashHandler.value = (script) => {
-            ifr.src = 'about:blank'; // refrash
-            setTimeout(() => {
-                injectImportScript(ifr.contentDocument.head, unpkgURL);
-                injectScript(ifr.contentDocument.body, script);
-            }, 1)
+    })
+
+    useEffect(() => {
+        const [ifr, innerScript] = [iframe?.value, content?.value];
+        if (!ifr) {
+            return
         }
+        if ((ifr.src || '').startsWith('blob:')) {
+            revokeBlob(ifr.src);
+        }
+        ifr.src = makeBlobFromTree({
+            tag: 'html',
+            lang: 'en',
+            children: [{
+                tag: 'head',
+                children: [{
+                    tag: 'script',
+                    src: unpkgURL,
+                    children: ['']
+                }]
+            }, {
+                tag: 'body',
+                children: [{
+                    tag: 'div',
+                    id: 'root',
+                    children: ['']
+                }, {
+                    tag: 'script',
+                    type: 'text/javascript',
+                    children: [innerScript || '']
+                }]
+            }]
+        });
     })
 
     return html`<div ref=${[styleRef]}>
@@ -60,7 +66,7 @@ export const Frame = (props, children) => {
             width: '100%',
             flex: 1,
             display: 'inline-block',
-            border: '0'
+            border: '0',
         }}></iframe>
         <footer>
             [TODO]: console / mocker / loading / something link
