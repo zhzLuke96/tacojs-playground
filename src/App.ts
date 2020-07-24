@@ -1,16 +1,24 @@
 import {
   html,
-  Icon,
   useEffect,
-  useLocalState,
   useRef,
   useState,
-  useStyle,
+  hox,
+  ui
 } from '@tacopie/taco';
 import Editor from './Editor';
 import Frame from './Frame';
 import { _v } from './utils';
 import defaultScript from './defaultScript.txt';
+
+const {
+  useLocalState,
+  useStyle,
+} = hox;
+
+const {
+  Icon
+} = ui;
 
 const TopBtn = (props?, children?) => {
   const { color } = props || {};

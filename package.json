@@ -35,7 +35,7 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "@tacopie/taco": "^1.0.3",
+    "@tacopie/taco": "^1.0.8",
     "@types/lodash": "^4.14.157",
     "css-loader": "^3.6.0",
     "file-loader": "^6.0.0",

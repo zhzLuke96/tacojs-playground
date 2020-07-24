@@ -1,5 +1,9 @@
-import { html, useEffect, useRef, useState, useStyle } from "@tacopie/taco";
+import { html, useEffect, useRef, hox } from "@tacopie/taco";
 import { makeBlobFromTree, onWindowClose, revokeBlob } from "./utils";
+
+const {
+    useStyle
+} = hox;
 
 const unpkgURL = "https://unpkg.com/@tacopie/taco";
 

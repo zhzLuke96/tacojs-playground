@@ -1,7 +1,11 @@
-import { html, useEffect, useRef, useState, useStyle } from "@tacopie/taco";
+import { html, useEffect, useRef, hox } from "@tacopie/taco";
+
+const {
+    useStyle
+} = hox;
 
 const loadEditor = () => new Promise((resolve, reject) => {
-    (window as any).require(["vs/editor/editor.main"], function() {
+    (window as any).require(["vs/editor/editor.main"], function () {
         resolve((window as any).monaco);
     });
 });
