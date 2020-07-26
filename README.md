@@ -38,4 +38,4 @@ Try the playground out on [github-pages](https://zhzluke96.github.io/tacojs-play
 
 ## License
 
-[MIT](LICENSE) © Richard Littauer
+[MIT](LICENSE) © zhzluke96
