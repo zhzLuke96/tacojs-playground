@@ -2,9 +2,9 @@ import {
   html,
   useEffect,
   useRef,
-  useState,
   hox,
-  ui
+  ui,
+  useState
 } from '@tacopie/taco';
 import Editor from './Editor';
 import Frame from './Frame';
@@ -14,6 +14,7 @@ import defaultScript from './defaultScript.txt';
 const {
   useLocalState,
   useStyle,
+  useValue
 } = hox;
 
 const {
@@ -83,7 +84,7 @@ export const App = (props?, children?) => {
     },
   });
   const content = useLocalState('@tacopia/taco-playground', defaultScript);
-  const [, , editContent] = useState(() => content.value);
+  const editContent = useValue(() => content.value);
   const syncContent = () =>
     // 这里是为了截断依赖捕获的逻辑，后续会提供 skip 元语
     setTimeout(() => (content.value = editContent.value), 1);

@@ -1,4 +1,5 @@
 import { html, useEffect, useRef, hox } from "@tacopie/taco";
+import { Memo } from "./utils";
 
 const {
     useStyle
@@ -20,6 +21,7 @@ export const Editor = (props, children) => {
         "height": "100%",
         "display": "inline-block",
     });
+    console.log()
     const editorRef = useRef(null as any);
     const elemRef = useRef(null as any);
     useEffect(async () => {

@@ -3,6 +3,9 @@
  *
 */
 
+import { useRef, html, useEffect } from "@tacopie/taco";
+import { isEqual } from "lodash";
+
 // 简易的vdom
 // tree2text({
 //     tag: 'html',
@@ -71,3 +74,18 @@ const tree2text = (tree) => {
 };
 
 export const _v = (v) => v?.value || v;
+
+// like React.memo
+export const Memo = (component, isEqual = (prev, curr) => true) => {
+    return (props, children) => {
+        const rendered = useRef(() => component(props, children));
+        const prevProps = useRef(() => props);
+        useEffect(() => {
+            prevProps.value = props;
+        })
+        if (!isEqual(prevProps, props)) {
+            return rendered.value = component(props, children);
+        }
+        return rendered.value;
+    }
+}
