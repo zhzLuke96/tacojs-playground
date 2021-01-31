@@ -8,6 +8,7 @@ import Editor from './Editor';
 import Frame from './Frame';
 import defaultScript from '../defaultScript.txt';
 import * as Taco from '@tacopie/taco';
+import {scriptVersion} from '../scriptVersion';
 
 import {
   useLocalState,
@@ -79,7 +80,7 @@ export const App = (props) => {
       display: 'flex',
     },
   }));
-  const content = useLocalState<string>('@tacopia/taco-playground', defaultScript);
+  const content = useLocalState<string>('@tacopia/taco-playground', defaultScript, scriptVersion);
   const editContent = useMemo(() => content.value);
   const syncContent = () =>
     // 这里是为了截断依赖捕获的逻辑，后续会提供 skip 元语
