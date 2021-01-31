@@ -10,11 +10,9 @@ const devMode = process.env.NODE_ENV !== 'production';
 module.exports = {
     devtool: devMode ? "inline-source-map" : false,
     entry: {
-        "index": './src/index.ts'
+        "index": './src/index.tsx'
     },
     output: {
-        // library: "myLibrary",
-        // libraryTarget: "umd",
         filename: devMode ? '[name].[hash:8].js' : '[name].min.js',
         path: resolve(__dirname, 'dist')
     },
@@ -36,7 +34,7 @@ module.exports = {
     },
     resolve: {
         extensions: [
-            '.ts', ".js", ".jsx", "tsx"
+            '.ts', ".js", ".jsx", ".tsx"
         ]
     },
     plugins: [

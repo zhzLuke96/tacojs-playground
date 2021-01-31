@@ -1,34 +1,34 @@
-const $ = document
-    .querySelector
-    .bind(document);
+import * as Taco from 'https://unpkg.com/@tacopie/taco?module';
 
 const {
     useState,
-    html,
-    mount,
-} = window.taco;
+    render,
+} = Taco;
 
-const css1 = { margin: '.5rem', padding: '1rem', 'font-weight': 900 };
+import htm from 'https://unpkg.com/htm?module';
+const html = htm.bind(Taco.h);
+
 
 const App = () => {
+    const css = { margin: '.5rem', padding: '1rem', 'font-weight': 900 };
     const [, , count] = useState(7);
     return html`
     🙅🏻‍♂️ 🙅🏻‍♀️ 🙆🏻 🙆🏻‍♂️ 🙆🏻‍♀️ 💁🏻 💁🏻‍♂️ 💁🏻‍♀️ 🙋🏻 🙋🏻‍♂️ 🙋🏻‍♀️ <br />
     <button
-        style=${css1}
+        style=${css}
         onclick=${() => count.value++}>
         ➕
     </button>
     <span
-        style=${css1}>
+        style=${css}>
         ✨count: ${count}
     </span>
     <button
-        style=${css1}
+        style=${css}
         onclick=${() => count.value--}>
         ➖
     </button>
     <br />🧏🏻 🧏🏻‍♂️ 🧏🏻‍♀️ 🙇🏻 🙇🏻‍♀️ 🤦🏻 🤦🏻‍♂️ 🤦🏻‍♀️ 🤷🏻 🤷🏻‍♂️ 🤷🏻‍♀️`
 }
 
-mount($('#root'), html`<${App} />`);
+render(html`<${App} />`, document.querySelector('#root'));

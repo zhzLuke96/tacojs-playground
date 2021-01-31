@@ -9,6 +9,8 @@
         "noImplicitAny": false,
         "experimentalDecorators": true,
         "esModuleInterop": true,
+        "jsx": "react",
+        "jsxFactory": "Taco.h",
         "lib": [
             "es6",
             "dom"
