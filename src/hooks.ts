@@ -18,6 +18,15 @@ const isVersionExpired = (key: string, version?: number) => {
   const vmap = p(localStorage.getItem(VERSIONMAP));
   return vmap[key] < version;
 };
+const updateVersion = (key:string, version: number) => {
+  if (localStorage.getItem(VERSIONMAP) === null) {
+    localStorage.setItem(VERSIONMAP, v({}));
+  }
+  const vmap = p(localStorage.getItem(VERSIONMAP));
+  vmap[key] = version;
+  localStorage.setItem(VERSIONMAP, v(vmap));
+  return;
+}
 
 export const useLocalState = <T>(
   key: string,
@@ -32,6 +41,7 @@ export const useLocalState = <T>(
     const localVal = localStorage.getItem(key);
     if (localVal === null) {
       localStorage.setItem(key, v(defaultValue));
+      version && updateVersion(key, version);
       return defaultValue;
     }
     return p(localVal) as T;
