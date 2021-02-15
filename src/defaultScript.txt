@@ -8,27 +8,28 @@ const {
 import htm from 'https://unpkg.com/htm?module';
 const html = htm.bind(Taco.h);
 
-
 const App = () => {
     const css = { margin: '.5rem', padding: '1rem', 'font-weight': 900 };
-    const [, , count] = useState(7);
-    return html`
-    🙅🏻‍♂️ 🙅🏻‍♀️ 🙆🏻 🙆🏻‍♂️ 🙆🏻‍♀️ 💁🏻 💁🏻‍♂️ 💁🏻‍♀️ 🙋🏻 🙋🏻‍♂️ 🙋🏻‍♀️ <br />
+    const [state, setState] = useState({count:7});
+    return () => html`
+    🙅🏻‍♂️ 🙅🏻‍♀️ 🙆🏻 🙆🏻‍♂️ 🙆🏻‍♀️ 💁🏻 💁🏻‍♂️ 💁🏻‍♀️ 🙋🏻 🤷🏻‍♂️
+    <br />
     <button
         style=${css}
-        onclick=${() => count.value++}>
+        onclick=${() => state.count++}>
         ➕
     </button>
     <span
         style=${css}>
-        ✨count: ${count}
+        ✨count: ${state.count}
     </span>
     <button
         style=${css}
-        onclick=${() => count.value--}>
+        onclick=${() => state.count--}>
         ➖
     </button>
-    <br />🧏🏻 🧏🏻‍♂️ 🧏🏻‍♀️ 🙇🏻 🙇🏻‍♀️ 🤦🏻 🤦🏻‍♂️ 🤦🏻‍♀️ 🤷🏻 🤷🏻‍♂️ 🤷🏻‍♀️`
+    <br />
+    🧏🏻 🧏🏻‍♂️ 🧏🏻‍♀️ 🙇🏻 🙇🏻‍♀️ 🤦🏻 🤦🏻‍♂️ 🤦🏻‍♀️ 🤷🏻 🤷🏻‍♂️`
 }
 
-render(html`<${App} />`, document.querySelector('#root'));
+render(App, document.querySelector('#root'));

@@ -1,26 +1,15 @@
-import {
-  useEffect,
-  useRef,
-  unref,
-  useMemo
-} from '@tacopie/taco';
+import {useEffect, useRef, unref, useMemo} from '@tacopie/taco';
+import * as Taco from '@tacopie/taco';
+import {useLocalState, useStyle} from '@tacopie/hox';
+import {MaterialIcon as Icon} from '@tacopie/ui';
+
 import Editor from './Editor';
 import Frame from './Frame';
 import defaultScript from '../defaultScript.txt';
-import * as Taco from '@tacopie/taco';
 import {scriptVersion} from '../scriptVersion';
 
-import {
-  useLocalState,
-  useStyle,
-} from '../hooks';
-
-import {
-  MaterialIcon as Icon
-} from '@tacopie/ui';
-
 const TopBtn = (props) => {
-  const { color, children } = props || {};
+  const {color, children} = props || {};
 
   const styleRef = useStyle(() => ({
     color: `${unref(color) || '#cccbcc'}`,
@@ -39,17 +28,18 @@ const TopBtn = (props) => {
     },
   }));
 
-  return (<button ref={styleRef} {...props}>
-  {children[0] || 'options'}
-</button>);
+  return (
+    <button ref={styleRef} {...props}>
+      {children[0] || 'options'}
+    </button>
+  );
 };
 
-const TopLinkBtn = ({ link = '', title = '' , children = []} = {}) =>  (<TopBtn
-  title={title || link}
-  onclick={() => window.open(link, '_blank')}
->
-  {children[0]}
-</TopBtn>);
+const TopLinkBtn = ({link = '', title = '', children = []} = {}) => (
+  <TopBtn title={title || link} onclick={() => window.open(link, '_blank')}>
+    {children}
+  </TopBtn>
+);
 
 const GithubBtn = () => {
   const elem = useRef(null);
@@ -64,7 +54,7 @@ const GithubBtn = () => {
 };
 
 export const App = (props) => {
-  const styleRef  = useStyle(() => ({
+  const styleRef = useStyle(() => ({
     width: '100vw',
     height: '100vh',
     'min-width': '640px',
@@ -80,24 +70,31 @@ export const App = (props) => {
       display: 'flex',
     },
   }));
-  const content = useLocalState<string>('@tacopia/taco-playground', defaultScript, scriptVersion);
+  const content = useLocalState<string>(
+    '@tacopia/taco-playground',
+    defaultScript,
+    scriptVersion
+  );
   const editContent = useMemo(() => content.value);
   const syncContent = () =>
     // 这里是为了截断依赖捕获的逻辑，后续会提供 skip 元语
     setTimeout(() => (content.value = editContent.value), 1);
   const refrash = syncContent;
 
-  return (<div ref={styleRef}>
+  return (
+    <div ref={styleRef}>
       <header>
-        <TopBtn title="Tacojs-playground"><Icon name="whatshot" /></TopBtn>
+        <TopBtn title="Tacojs-playground">
+          <Icon name="whatshot" />
+        </TopBtn>
         <TopBtn>File</TopBtn>
         <TopBtn>Edit</TopBtn>
-        <TopBtn color={'rgb(45, 181, 93)'} onclick={refrash}>Run</TopBtn>
+        <TopBtn color={'rgb(45, 181, 93)'} onclick={refrash}>
+          Run
+        </TopBtn>
         <TopBtn>Help</TopBtn>
-        <div style={{ flex: 1, margin: 'auto' }}></div>
-        <TopLinkBtn link="https://github.com/zhzLuke96/TacoJs">
-          🌮
-        </TopLinkBtn>
+        <div style={{flex: 1, margin: 'auto'}}></div>
+        <TopLinkBtn link="https://github.com/zhzLuke96/TacoJs">🌮</TopLinkBtn>
         <TopLinkBtn link="https://github.com/zhzLuke96/tacojs-playground">
           <GithubBtn />
         </TopLinkBtn>
@@ -110,8 +107,8 @@ export const App = (props) => {
         />
         <Frame content={content} />
       </div>
-    </div>)
-  ;
+    </div>
+  );
 };
 
 export default App;

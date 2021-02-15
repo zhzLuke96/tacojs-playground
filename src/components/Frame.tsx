@@ -1,6 +1,7 @@
 import {useEffect, useRef} from '@tacopie/taco';
+import {useStyle} from '@tacopie/hox';
+
 import {makeBlobFromTree, onWindowClose, revokeBlob} from '../utils';
-import {useStyle} from '../hooks';
 import * as Taco from '@tacopie/taco';
 
 export const Frame = (props) => {
@@ -62,18 +63,20 @@ export const Frame = (props) => {
     });
   });
 
-  return (<div ref={styleRef}>
-  <iframe
-    ref={iframe}
-    style={{
-      width: '100%',
-      flex: 1,
-      display: 'inline-block',
-      border: '0',
-    }}
-  ></iframe>
-  <footer>[TODO]: console / mocker / loading / something link</footer>
-</div>);
+  return (
+    <div ref={styleRef}>
+      <iframe
+        ref={iframe}
+        style={{
+          width: '100%',
+          flex: 1,
+          display: 'inline-block',
+          border: '0',
+        }}
+      ></iframe>
+      <footer>[TODO]: console / mocker / loading / something link</footer>
+    </div>
+  );
 };
 
 export default Frame;

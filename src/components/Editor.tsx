@@ -1,7 +1,6 @@
 import {useEffect, useRef} from '@tacopie/taco';
 import * as Taco from '@tacopie/taco';
-
-import {useStyle} from '../hooks';
+import {useStyle} from '@tacopie/hox';
 
 const loadEditor = () =>
   new Promise((resolve, reject) => {
@@ -58,7 +57,15 @@ export const Editor = (props) => {
       });
     })();
   });
-  return <div ref={(elem) => [styleRef, elemRef].forEach((f:any) => typeof f === 'function' ? f(elem):f.value = elem)}></div>;
+  return (
+    <div
+      ref={(elem) =>
+        [styleRef, elemRef].forEach((f: any) =>
+          typeof f === 'function' ? f(elem) : (f.value = elem)
+        )
+      }
+    ></div>
+  );
 };
 
 export default Editor;
